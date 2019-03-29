@@ -1,4 +1,4 @@
-*PrivAPI* is a Python package that allows classifying sensitive data flows within
+*PrivAPI* is a Python package that allows the classification of sensitive data flows within
 REST API communication using Deep Neural Networks (DNN).
 It relies on Google's Keras and TensorFlow.
 
@@ -53,17 +53,16 @@ Install dependencies
 Create a Neural Network Model
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In in order to detect sensitive data flows the system has to learn from confidential and non-confidential REST API request
+In order to detect sensitive data flows the system has to learn from confidential and non-confidential REST API request
 payloads.
-The project ships with a pre-generated dataset that can be used to train an LSTM neural network. If you want to generate your
-please refer to the next section.
+The project ships with a pre-generated dataset that can be used to train an LSTM neural network. If you want to generate your own, please refer to the next section.
 
 .. code:: bash
 
     python privapi/train.py
 
 This will generate both the model and token directionary files living within the ``out`` folder.
-It's strongly recommended to use a GPU box in ordr to speed up this process at the model requires 100 epochs to converge.
+It's strongly recommended to use a GPU box in order to speed up this process, as the model requires 100 epochs to converge.
 
 Detect sensitive dataflows
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -85,8 +84,8 @@ This command will output predictions to the ``predictions.csv`` file within the 
     0,"magento-payload.json",1,0.9999695
     1,"slack-payload.json",0,0.40711942
 
-As you can notice, Magento's sensitive request payload has been classified as confidential with a 99% confidence.
-The non-confidential Slack request payload, even if it contained a first and last name, it was classified correctly.
+As you can see, Magento's sensitive request payload has been classified as confidential with 99% confidence.
+The non-confidential Slack request payload was classified correctly, even if it contained a first and last name.
 
 Drop the request payloads you wish to classify onto the ``predict`` folder and re-run the ``predict.py`` script. Any file having
 the ``.json`` extension will be picked up.
@@ -96,7 +95,7 @@ Enjoy!
 Generate
 --------
 
-For generating your own your own training dataset use the following command :
+For generating your own training dataset use the following command :
 
 .. code:: bash
 
@@ -113,14 +112,13 @@ In order to obtain relevant metrics of the generated dataset use :
 Configuration
 -------------
 
-What will heavily determine the accuracy of the predictions is quality
-of training dataset.
-In addition to generate sound request payload examples, we need to make sure that
+What will heavily determine the accuracy of the predictions is the quality
+of the training dataset.
+In addition, to generate sound request payload examples we need to make sure that
 the associated label - whether sensitive or not - is correct.
 
-In order to label an example, the generator will look in the ``config.py`` descriptor whether there's a matching entry for
-a given OpenAPI operation parameter name matches the ``name_type_to_gen`` dictionary.
-In case there is, it used the associated generator and label the example as positive (i.e. having PII).
+In order to label an example, the generator will look in the ``config.py`` descriptor to determine whether there's a matching entry for a given OpenAPI operation parameter name that matches the ``name_type_to_gen`` dictionary.
+If there is, it will use the associated generator and label the example as positive (i.e. having PII).
 
 Here's an example configuration file. Feel free to add your own custom entries in order to
 consider additional PII fields.
