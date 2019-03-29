@@ -1,0 +1,7 @@
+info:
+  description: A developer friendly API to help your business achieve VAT compliance
+  title: VAT API
+  x-logo:
+    url: 'https://vatapi.com/images/logo-invoice.jpg'
+  x-apisguru-categories:
+    - financial

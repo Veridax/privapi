@@ -1,0 +1,9 @@
+tensorflow==1.13.1
+pandas==0.24.1
+faker==1.0.2
+faker-credit-score==0.2.2
+pyswagger==0.8.39
+requests==2.21.0
+keras==2.2.4
+simplejson==3.16.0
+xeger==0.3.4

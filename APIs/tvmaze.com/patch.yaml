@@ -1,0 +1,6 @@
+info:
+  x-logo:
+    url: 'https://twitter.com/tvmaze/profile_image?size=original'
+    backgroundColor: '#FFFFFF'
+  x-apisguru-categories:
+    - media

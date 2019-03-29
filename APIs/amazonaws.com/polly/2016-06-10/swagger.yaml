@@ -1,0 +1,1033 @@
+swagger: '2.0'
+info:
+  version: '2016-06-10'
+  x-release: v4
+  title: Amazon Polly
+  description: '<p>Amazon Polly is a web service that makes it easy to synthesize speech from text.</p> <p>The Amazon Polly service provides API operations for synthesizing high-quality speech from plain text and Speech Synthesis Markup Language (SSML), along with managing pronunciations lexicons that enable you to get the best results for your application domain.</p>'
+  x-logo:
+    url: 'https://twitter.com/awscloud/profile_image?size=original'
+    backgroundColor: '#FFFFFF'
+  termsOfService: 'https://aws.amazon.com/service-terms/'
+  contact:
+    name: Mike Ralphson
+    email: mike.ralphson@gmail.com
+    url: 'https://github.com/mermade/aws2openapi'
+    x-twitter: PermittedSoc
+  license:
+    name: Apache 2.0 License
+    url: 'http://www.apache.org/licenses/'
+  x-providerName: amazonaws.com
+  x-serviceName: polly
+  x-origin:
+    - contentType: application/json
+      url: 'https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/polly-2016-06-10.normal.json'
+      converter:
+        url: 'https://github.com/mermade/aws2openapi'
+        version: 1.0.0
+      x-apisguru-direct: true
+  x-apiClientRegistration:
+    url: 'https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct'
+  x-apisguru-categories:
+    - cloud
+  x-preferred: true
+externalDocs:
+  description: Amazon Web Services documentation
+  url: 'https://aws.amazon.com/polly/'
+host: polly.amazonaws.com
+basePath: /
+x-hasEquivalentPaths: true
+schemes:
+  - https
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+parameters:
+  Action:
+    name: Action
+    in: query
+    type: string
+    required: true
+  Version:
+    name: Version
+    in: query
+    type: string
+    required: true
+  X-Amz-Content-Sha256:
+    name: X-Amz-Content-Sha256
+    in: header
+    type: string
+    required: false
+  X-Amz-Date:
+    name: X-Amz-Date
+    in: header
+    type: string
+    required: false
+  X-Amz-Algorithm:
+    name: X-Amz-Algorithm
+    in: header
+    type: string
+    required: false
+  X-Amz-Credential:
+    name: X-Amz-Credential
+    in: header
+    type: string
+    required: false
+  X-Amz-Security-Token:
+    name: X-Amz-Security-Token
+    in: header
+    type: string
+    required: false
+  X-Amz-Signature:
+    name: X-Amz-Signature
+    in: header
+    type: string
+    required: false
+  X-Amz-SignedHeaders:
+    name: X-Amz-SignedHeaders
+    in: header
+    type: string
+    required: false
+securityDefinitions:
+  hmac:
+    type: apiKey
+    name: Authorization
+    in: header
+    description: Amazon Signature authorization v4
+    x-amazon-apigateway-authtype: awsSigv4
+security:
+  - hmac: []
+paths:
+  '/v1/lexicons/{LexiconName}':
+    delete:
+      operationId: DeleteLexicon
+      description: '<p>Deletes the specified pronunciation lexicon stored in an AWS Region. A lexicon which has been deleted is not available for speech synthesis, nor is it possible to retrieve it using either the <code>GetLexicon</code> or <code>ListLexicon</code> APIs.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html">Managing Lexicons</a>.</p>'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/DeleteLexiconOutput'
+        '480':
+          description: LexiconNotFoundException
+          schema:
+            $ref: '#/definitions/LexiconNotFoundException'
+        '481':
+          description: ServiceFailureException
+          schema:
+            $ref: '#/definitions/ServiceFailureException'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/DeleteLexiconInput'
+        - name: LexiconName
+          type: string
+          in: path
+          required: true
+    parameters:
+      - $ref: '#/parameters/Action'
+      - $ref: '#/parameters/Version'
+      - $ref: '#/parameters/X-Amz-Content-Sha256'
+      - $ref: '#/parameters/X-Amz-Date'
+      - $ref: '#/parameters/X-Amz-Algorithm'
+      - $ref: '#/parameters/X-Amz-Credential'
+      - $ref: '#/parameters/X-Amz-Security-Token'
+      - $ref: '#/parameters/X-Amz-Signature'
+      - $ref: '#/parameters/X-Amz-SignedHeaders'
+    get:
+      operationId: GetLexicon
+      description: 'Returns the content of the specified pronunciation lexicon stored in an AWS Region. For more information, see <a href="http://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html">Managing Lexicons</a>.'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/GetLexiconOutput'
+        '480':
+          description: LexiconNotFoundException
+          schema:
+            $ref: '#/definitions/LexiconNotFoundException'
+        '481':
+          description: ServiceFailureException
+          schema:
+            $ref: '#/definitions/ServiceFailureException'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/GetLexiconInput'
+        - name: LexiconName
+          type: string
+          in: path
+          required: true
+    put:
+      operationId: PutLexicon
+      description: '<p>Stores a pronunciation lexicon in an AWS Region. If a lexicon with the same name already exists in the region, it is overwritten by the new lexicon. Lexicon operations have eventual consistency, therefore, it might take some time before the lexicon is available to the SynthesizeSpeech operation.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html">Managing Lexicons</a>.</p>'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/PutLexiconOutput'
+        '480':
+          description: InvalidLexiconException
+          schema:
+            $ref: '#/definitions/InvalidLexiconException'
+        '481':
+          description: UnsupportedPlsAlphabetException
+          schema:
+            $ref: '#/definitions/UnsupportedPlsAlphabetException'
+        '482':
+          description: UnsupportedPlsLanguageException
+          schema:
+            $ref: '#/definitions/UnsupportedPlsLanguageException'
+        '483':
+          description: LexiconSizeExceededException
+          schema:
+            $ref: '#/definitions/LexiconSizeExceededException'
+        '484':
+          description: MaxLexemeLengthExceededException
+          schema:
+            $ref: '#/definitions/MaxLexemeLengthExceededException'
+        '485':
+          description: MaxLexiconsNumberExceededException
+          schema:
+            $ref: '#/definitions/MaxLexiconsNumberExceededException'
+        '486':
+          description: ServiceFailureException
+          schema:
+            $ref: '#/definitions/ServiceFailureException'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/PutLexiconInput'
+        - name: LexiconName
+          type: string
+          in: path
+          required: true
+  /v1/voices:
+    get:
+      operationId: DescribeVoices
+      description: '<p>Returns the list of voices that are available for use when requesting speech synthesis. Each voice speaks a specified language, is either male or female, and is identified by an ID, which is the ASCII version of the voice name. </p> <p>When synthesizing speech ( <code>SynthesizeSpeech</code> ), you provide the voice ID for the voice you want from the list of voices returned by <code>DescribeVoices</code>.</p> <p>For example, you want your news reader application to read news in a specific language, but giving a user the option to choose the voice. Using the <code>DescribeVoices</code> operation you can provide the user with a list of available voices to select from.</p> <p> You can optionally specify a language code to filter the available voices. For example, if you specify <code>en-US</code>, the operation returns a list of all available US English voices. </p> <p>This operation requires permissions to perform the <code>polly:DescribeVoices</code> action.</p>'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/DescribeVoicesOutput'
+        '480':
+          description: InvalidNextTokenException
+          schema:
+            $ref: '#/definitions/InvalidNextTokenException'
+        '481':
+          description: ServiceFailureException
+          schema:
+            $ref: '#/definitions/ServiceFailureException'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/DescribeVoicesInput'
+    parameters:
+      - $ref: '#/parameters/Action'
+      - $ref: '#/parameters/Version'
+      - $ref: '#/parameters/X-Amz-Content-Sha256'
+      - $ref: '#/parameters/X-Amz-Date'
+      - $ref: '#/parameters/X-Amz-Algorithm'
+      - $ref: '#/parameters/X-Amz-Credential'
+      - $ref: '#/parameters/X-Amz-Security-Token'
+      - $ref: '#/parameters/X-Amz-Signature'
+      - $ref: '#/parameters/X-Amz-SignedHeaders'
+  '/v1/synthesisTasks/{TaskId}':
+    get:
+      operationId: GetSpeechSynthesisTask
+      description: 'Retrieves a specific SpeechSynthesisTask object based on its TaskID. This object contains information about the given speech synthesis task, including the status of the task, and a link to the S3 bucket containing the output of the task.'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/GetSpeechSynthesisTaskOutput'
+        '480':
+          description: InvalidTaskIdException
+          schema:
+            $ref: '#/definitions/InvalidTaskIdException'
+        '481':
+          description: ServiceFailureException
+          schema:
+            $ref: '#/definitions/ServiceFailureException'
+        '482':
+          description: SynthesisTaskNotFoundException
+          schema:
+            $ref: '#/definitions/SynthesisTaskNotFoundException'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/GetSpeechSynthesisTaskInput'
+        - name: TaskId
+          type: string
+          in: path
+          required: true
+    parameters:
+      - $ref: '#/parameters/Action'
+      - $ref: '#/parameters/Version'
+      - $ref: '#/parameters/X-Amz-Content-Sha256'
+      - $ref: '#/parameters/X-Amz-Date'
+      - $ref: '#/parameters/X-Amz-Algorithm'
+      - $ref: '#/parameters/X-Amz-Credential'
+      - $ref: '#/parameters/X-Amz-Security-Token'
+      - $ref: '#/parameters/X-Amz-Signature'
+      - $ref: '#/parameters/X-Amz-SignedHeaders'
+  /v1/lexicons:
+    get:
+      operationId: ListLexicons
+      description: 'Returns a list of pronunciation lexicons stored in an AWS Region. For more information, see <a href="http://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html">Managing Lexicons</a>.'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/ListLexiconsOutput'
+        '480':
+          description: InvalidNextTokenException
+          schema:
+            $ref: '#/definitions/InvalidNextTokenException'
+        '481':
+          description: ServiceFailureException
+          schema:
+            $ref: '#/definitions/ServiceFailureException'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ListLexiconsInput'
+    parameters:
+      - $ref: '#/parameters/Action'
+      - $ref: '#/parameters/Version'
+      - $ref: '#/parameters/X-Amz-Content-Sha256'
+      - $ref: '#/parameters/X-Amz-Date'
+      - $ref: '#/parameters/X-Amz-Algorithm'
+      - $ref: '#/parameters/X-Amz-Credential'
+      - $ref: '#/parameters/X-Amz-Security-Token'
+      - $ref: '#/parameters/X-Amz-Signature'
+      - $ref: '#/parameters/X-Amz-SignedHeaders'
+  /v1/synthesisTasks:
+    get:
+      operationId: ListSpeechSynthesisTasks
+      description: 'Returns a list of SpeechSynthesisTask objects ordered by their creation date. This operation can filter the tasks by their status, for example, allowing users to list only tasks that are completed.'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/ListSpeechSynthesisTasksOutput'
+        '480':
+          description: InvalidNextTokenException
+          schema:
+            $ref: '#/definitions/InvalidNextTokenException'
+        '481':
+          description: ServiceFailureException
+          schema:
+            $ref: '#/definitions/ServiceFailureException'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ListSpeechSynthesisTasksInput'
+        - name: MaxResults
+          type: string
+          in: query
+          description: Pagination limit
+          required: false
+        - name: NextToken
+          type: string
+          in: query
+          description: Pagination token
+          required: false
+    parameters:
+      - $ref: '#/parameters/Action'
+      - $ref: '#/parameters/Version'
+      - $ref: '#/parameters/X-Amz-Content-Sha256'
+      - $ref: '#/parameters/X-Amz-Date'
+      - $ref: '#/parameters/X-Amz-Algorithm'
+      - $ref: '#/parameters/X-Amz-Credential'
+      - $ref: '#/parameters/X-Amz-Security-Token'
+      - $ref: '#/parameters/X-Amz-Signature'
+      - $ref: '#/parameters/X-Amz-SignedHeaders'
+    post:
+      operationId: StartSpeechSynthesisTask
+      description: 'Allows the creation of an asynchronous synthesis task, by starting a new <code>SpeechSynthesisTask</code>. This operation requires all the standard information needed for speech synthesis, plus the name of an Amazon S3 bucket for the service to store the output of the synthesis task and two optional parameters (OutputS3KeyPrefix and SnsTopicArn). Once the synthesis task is created, this operation will return a SpeechSynthesisTask object, which will include an identifier of this task as well as the current status.'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/StartSpeechSynthesisTaskOutput'
+        '480':
+          description: TextLengthExceededException
+          schema:
+            $ref: '#/definitions/TextLengthExceededException'
+        '481':
+          description: InvalidS3BucketException
+          schema:
+            $ref: '#/definitions/InvalidS3BucketException'
+        '482':
+          description: InvalidS3KeyException
+          schema:
+            $ref: '#/definitions/InvalidS3KeyException'
+        '483':
+          description: InvalidSampleRateException
+          schema:
+            $ref: '#/definitions/InvalidSampleRateException'
+        '484':
+          description: InvalidSnsTopicArnException
+          schema:
+            $ref: '#/definitions/InvalidSnsTopicArnException'
+        '485':
+          description: InvalidSsmlException
+          schema:
+            $ref: '#/definitions/InvalidSsmlException'
+        '486':
+          description: LexiconNotFoundException
+          schema:
+            $ref: '#/definitions/LexiconNotFoundException'
+        '487':
+          description: ServiceFailureException
+          schema:
+            $ref: '#/definitions/ServiceFailureException'
+        '488':
+          description: MarksNotSupportedForFormatException
+          schema:
+            $ref: '#/definitions/MarksNotSupportedForFormatException'
+        '489':
+          description: SsmlMarksNotSupportedForTextTypeException
+          schema:
+            $ref: '#/definitions/SsmlMarksNotSupportedForTextTypeException'
+        '490':
+          description: LanguageNotSupportedException
+          schema:
+            $ref: '#/definitions/LanguageNotSupportedException'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/StartSpeechSynthesisTaskInput'
+  /v1/speech:
+    post:
+      operationId: SynthesizeSpeech
+      description: 'Synthesizes UTF-8 input, plain text or SSML, to a stream of bytes. SSML input must be valid, well-formed SSML. Some alphabets might not be available with all the voices (for example, Cyrillic might not be read at all by English voices) unless phoneme mapping is used. For more information, see <a href="http://docs.aws.amazon.com/polly/latest/dg/how-text-to-speech-works.html">How it Works</a>.'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/SynthesizeSpeechOutput'
+        '480':
+          description: TextLengthExceededException
+          schema:
+            $ref: '#/definitions/TextLengthExceededException'
+        '481':
+          description: InvalidSampleRateException
+          schema:
+            $ref: '#/definitions/InvalidSampleRateException'
+        '482':
+          description: InvalidSsmlException
+          schema:
+            $ref: '#/definitions/InvalidSsmlException'
+        '483':
+          description: LexiconNotFoundException
+          schema:
+            $ref: '#/definitions/LexiconNotFoundException'
+        '484':
+          description: ServiceFailureException
+          schema:
+            $ref: '#/definitions/ServiceFailureException'
+        '485':
+          description: MarksNotSupportedForFormatException
+          schema:
+            $ref: '#/definitions/MarksNotSupportedForFormatException'
+        '486':
+          description: SsmlMarksNotSupportedForTextTypeException
+          schema:
+            $ref: '#/definitions/SsmlMarksNotSupportedForTextTypeException'
+        '487':
+          description: LanguageNotSupportedException
+          schema:
+            $ref: '#/definitions/LanguageNotSupportedException'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/SynthesizeSpeechInput'
+    parameters:
+      - $ref: '#/parameters/Action'
+      - $ref: '#/parameters/Version'
+      - $ref: '#/parameters/X-Amz-Content-Sha256'
+      - $ref: '#/parameters/X-Amz-Date'
+      - $ref: '#/parameters/X-Amz-Algorithm'
+      - $ref: '#/parameters/X-Amz-Credential'
+      - $ref: '#/parameters/X-Amz-Security-Token'
+      - $ref: '#/parameters/X-Amz-Signature'
+      - $ref: '#/parameters/X-Amz-SignedHeaders'
+definitions:
+  DeleteLexiconOutput:
+    type: object
+    example: {}
+    properties: {}
+  DeleteLexiconInput:
+    type: object
+    example:
+      Name: example
+    properties: {}
+  LexiconNotFoundException: {}
+  ServiceFailureException: {}
+  DescribeVoicesOutput:
+    type: object
+    example:
+      Voices:
+        - Gender: Female
+          Id: Emma
+          LanguageCode: en-GB
+          LanguageName: British English
+          Name: Emma
+        - Gender: Male
+          Id: Brian
+          LanguageCode: en-GB
+          LanguageName: British English
+          Name: Brian
+        - Gender: Female
+          Id: Amy
+          LanguageCode: en-GB
+          LanguageName: British English
+          Name: Amy
+    properties:
+      Voices:
+        $ref: '#/definitions/VoiceList'
+        description: A list of voices with their properties.
+      NextToken:
+        $ref: '#/definitions/NextToken'
+        description: The pagination token to use in the next request to continue the listing of voices. <code>NextToken</code> is returned only if the response is truncated.
+  DescribeVoicesInput:
+    type: object
+    example:
+      LanguageCode: en-GB
+    properties: {}
+  InvalidNextTokenException: {}
+  GetLexiconOutput:
+    type: object
+    example:
+      Lexicon:
+        Content: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<lexicon version=\"1.0\" \r\n      xmlns=\"http://www.w3.org/2005/01/pronunciation-lexicon\"\r\n      xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" \r\n      xsi:schemaLocation=\"http://www.w3.org/2005/01/pronunciation-lexicon \r\n        http://www.w3.org/TR/2007/CR-pronunciation-lexicon-20071212/pls.xsd\"\r\n      alphabet=\"ipa\" \r\n      xml:lang=\"en-US\">\r\n  <lexeme>\r\n    <grapheme>W3C</grapheme>\r\n    <alias>World Wide Web Consortium</alias>\r\n  </lexeme>\r\n</lexicon>"
+        Name: example
+      LexiconAttributes:
+        Alphabet: ipa
+        LanguageCode: en-US
+        LastModified: 1478542980.117
+        LexemesCount: 1
+        LexiconArn: 'arn:aws:polly:us-east-1:123456789012:lexicon/example'
+        Size: 503
+    properties:
+      Lexicon:
+        $ref: '#/definitions/Lexicon'
+        description: 'Lexicon object that provides name and the string content of the lexicon. '
+      LexiconAttributes:
+        $ref: '#/definitions/LexiconAttributes'
+        description: 'Metadata of the lexicon, including phonetic alphabetic used, language code, lexicon ARN, number of lexemes defined in the lexicon, and size of lexicon in bytes.'
+  GetLexiconInput:
+    type: object
+    example:
+      Name: ''
+    properties: {}
+  GetSpeechSynthesisTaskOutput:
+    type: object
+    properties:
+      SynthesisTask:
+        $ref: '#/definitions/SynthesisTask'
+        description: 'SynthesisTask object that provides information from the requested task, including output format, creation time, task status, and so on.'
+  GetSpeechSynthesisTaskInput:
+    type: object
+    properties: {}
+  InvalidTaskIdException: {}
+  SynthesisTaskNotFoundException: {}
+  ListLexiconsOutput:
+    type: object
+    example:
+      Lexicons:
+        - Attributes:
+            Alphabet: ipa
+            LanguageCode: en-US
+            LastModified: 1478542980.117
+            LexemesCount: 1
+            LexiconArn: 'arn:aws:polly:us-east-1:123456789012:lexicon/example'
+            Size: 503
+          Name: example
+    properties:
+      Lexicons:
+        $ref: '#/definitions/LexiconDescriptionList'
+        description: A list of lexicon names and attributes.
+      NextToken:
+        $ref: '#/definitions/NextToken'
+        description: The pagination token to use in the next request to continue the listing of lexicons. <code>NextToken</code> is returned only if the response is truncated.
+  ListLexiconsInput:
+    type: object
+    example: {}
+    properties: {}
+  ListSpeechSynthesisTasksOutput:
+    type: object
+    properties:
+      NextToken:
+        $ref: '#/definitions/NextToken'
+        description: 'An opaque pagination token returned from the previous List operation in this request. If present, this indicates where to continue the listing.'
+      SynthesisTasks:
+        $ref: '#/definitions/SynthesisTasks'
+        description: 'List of SynthesisTask objects that provides information from the specified task in the list request, including output format, creation time, task status, and so on.'
+  ListSpeechSynthesisTasksInput:
+    type: object
+    properties: {}
+  PutLexiconOutput:
+    type: object
+    example: {}
+    properties: {}
+  PutLexiconInput:
+    type: object
+    required:
+      - Content
+    example:
+      Content: 'file://example.pls'
+      Name: W3C
+    properties:
+      Content:
+        $ref: '#/definitions/LexiconContent'
+        description: Content of the PLS lexicon as string data.
+  InvalidLexiconException: {}
+  UnsupportedPlsAlphabetException: {}
+  UnsupportedPlsLanguageException: {}
+  LexiconSizeExceededException: {}
+  MaxLexemeLengthExceededException: {}
+  MaxLexiconsNumberExceededException: {}
+  StartSpeechSynthesisTaskOutput:
+    type: object
+    properties:
+      SynthesisTask:
+        $ref: '#/definitions/SynthesisTask'
+        description: SynthesisTask object that provides information and attributes about a newly submitted speech synthesis task.
+  StartSpeechSynthesisTaskInput:
+    type: object
+    required:
+      - OutputFormat
+      - OutputS3BucketName
+      - Text
+      - VoiceId
+    properties:
+      LexiconNames:
+        $ref: '#/definitions/LexiconNameList'
+        description: 'List of one or more pronunciation lexicon names you want the service to apply during synthesis. Lexicons are applied only if the language of the lexicon is the same as the language of the voice. '
+      OutputFormat:
+        $ref: '#/definitions/OutputFormat'
+        description: 'The format in which the returned output will be encoded. For audio stream, this will be mp3, ogg_vorbis, or pcm. For speech marks, this will be json. '
+      OutputS3BucketName:
+        $ref: '#/definitions/OutputS3BucketName'
+        description: Amazon S3 bucket name to which the output file will be saved.
+      OutputS3KeyPrefix:
+        $ref: '#/definitions/OutputS3KeyPrefix'
+        description: The Amazon S3 key prefix for the output speech file.
+      SampleRate:
+        $ref: '#/definitions/SampleRate'
+        description: '<p>The audio frequency specified in Hz.</p> <p>The valid values for mp3 and ogg_vorbis are "8000", "16000", and "22050". The default value is "22050".</p> <p>Valid values for pcm are "8000" and "16000" The default value is "16000". </p>'
+      SnsTopicArn:
+        $ref: '#/definitions/SnsTopicArn'
+        description: ARN for the SNS topic optionally used for providing status notification for a speech synthesis task.
+      SpeechMarkTypes:
+        $ref: '#/definitions/SpeechMarkTypeList'
+        description: The type of speech marks returned for the input text.
+      Text:
+        $ref: '#/definitions/Text'
+        description: 'The input text to synthesize. If you specify ssml as the TextType, follow the SSML format for the input text. '
+      TextType:
+        $ref: '#/definitions/TextType'
+        description: 'Specifies whether the input text is plain text or SSML. The default value is plain text. '
+      VoiceId:
+        $ref: '#/definitions/VoiceId'
+        description: 'Voice ID to use for the synthesis. '
+      LanguageCode:
+        $ref: '#/definitions/LanguageCode'
+        description: '<p>Optional language code for the Speech Synthesis request. This is only necessary if using a bilingual voice, such as Aditi, which can be used for either Indian English (en-IN) or Hindi (hi-IN). </p> <p>If a bilingual voice is used and no language code is specified, Amazon Polly will use the default language of the bilingual voice. The default language for any voice is the one returned by the <a href="https://docs.aws.amazon.com/polly/latest/dg/API_DescribeVoices.html">DescribeVoices</a> operation for the <code>LanguageCode</code> parameter. For example, if no language code is specified, Aditi will use Indian English rather than Hindi.</p>'
+  TextLengthExceededException: {}
+  InvalidS3BucketException: {}
+  InvalidS3KeyException: {}
+  InvalidSampleRateException: {}
+  InvalidSnsTopicArnException: {}
+  InvalidSsmlException: {}
+  MarksNotSupportedForFormatException: {}
+  SsmlMarksNotSupportedForTextTypeException: {}
+  LanguageNotSupportedException: {}
+  SynthesizeSpeechOutput:
+    type: object
+    example:
+      AudioStream: TEXT
+      ContentType: audio/mpeg
+      RequestCharacters: 37
+    properties:
+      AudioStream:
+        $ref: '#/definitions/AudioStream'
+        description: ' Stream containing the synthesized speech. '
+  SynthesizeSpeechInput:
+    type: object
+    required:
+      - OutputFormat
+      - Text
+      - VoiceId
+    example:
+      LexiconNames:
+        - example
+      OutputFormat: mp3
+      SampleRate: '8000'
+      Text: All Gaul is divided into three parts
+      TextType: text
+      VoiceId: Joanna
+    properties:
+      LexiconNames:
+        $ref: '#/definitions/LexiconNameList'
+        description: 'List of one or more pronunciation lexicon names you want the service to apply during synthesis. Lexicons are applied only if the language of the lexicon is the same as the language of the voice. For information about storing lexicons, see <a href="http://docs.aws.amazon.com/polly/latest/dg/API_PutLexicon.html">PutLexicon</a>.'
+      OutputFormat:
+        $ref: '#/definitions/OutputFormat'
+        description: '<p> The format in which the returned output will be encoded. For audio stream, this will be mp3, ogg_vorbis, or pcm. For speech marks, this will be json. </p> <p>When pcm is used, the content returned is audio/pcm in a signed 16-bit, 1 channel (mono), little-endian format. </p>'
+      SampleRate:
+        $ref: '#/definitions/SampleRate'
+        description: '<p> The audio frequency specified in Hz. </p> <p>The valid values for <code>mp3</code> and <code>ogg_vorbis</code> are "8000", "16000", and "22050". The default value is "22050". </p> <p> Valid values for <code>pcm</code> are "8000" and "16000" The default value is "16000". </p>'
+      SpeechMarkTypes:
+        $ref: '#/definitions/SpeechMarkTypeList'
+        description: The type of speech marks returned for the input text.
+      Text:
+        $ref: '#/definitions/Text'
+        description: ' Input text to synthesize. If you specify <code>ssml</code> as the <code>TextType</code>, follow the SSML format for the input text. '
+      TextType:
+        $ref: '#/definitions/TextType'
+        description: ' Specifies whether the input text is plain text or SSML. The default value is plain text. For more information, see <a href="http://docs.aws.amazon.com/polly/latest/dg/ssml.html">Using SSML</a>.'
+      VoiceId:
+        $ref: '#/definitions/VoiceId'
+        description: ' Voice ID to use for the synthesis. You can get a list of available voice IDs by calling the <a href="http://docs.aws.amazon.com/polly/latest/dg/API_DescribeVoices.html">DescribeVoices</a> operation. '
+      LanguageCode:
+        $ref: '#/definitions/LanguageCode'
+        description: '<p>Optional language code for the Synthesize Speech request. This is only necessary if using a bilingual voice, such as Aditi, which can be used for either Indian English (en-IN) or Hindi (hi-IN). </p> <p>If a bilingual voice is used and no language code is specified, Amazon Polly will use the default language of the bilingual voice. The default language for any voice is the one returned by the <a href="https://docs.aws.amazon.com/polly/latest/dg/API_DescribeVoices.html">DescribeVoices</a> operation for the <code>LanguageCode</code> parameter. For example, if no language code is specified, Aditi will use Indian English rather than Hindi.</p>'
+  Alphabet:
+    type: string
+  AudioStream:
+    type: string
+  ContentType:
+    type: string
+  DateTime:
+    type: string
+    format: date-time
+  LexiconName:
+    type: string
+    pattern: '[0-9A-Za-z]{1,20}'
+    format: password
+  LanguageCode:
+    type: string
+    enum:
+      - cmn-CN
+      - cy-GB
+      - da-DK
+      - de-DE
+      - en-AU
+      - en-GB
+      - en-GB-WLS
+      - en-IN
+      - en-US
+      - es-ES
+      - es-MX
+      - es-US
+      - fr-CA
+      - fr-FR
+      - is-IS
+      - it-IT
+      - ja-JP
+      - hi-IN
+      - ko-KR
+      - nb-NO
+      - nl-NL
+      - pl-PL
+      - pt-BR
+      - pt-PT
+      - ro-RO
+      - ru-RU
+      - sv-SE
+      - tr-TR
+  IncludeAdditionalLanguageCodes:
+    type: boolean
+  NextToken:
+    type: string
+  VoiceList:
+    type: array
+    items:
+      $ref: '#/definitions/Voice'
+  Gender:
+    type: string
+    enum:
+      - Female
+      - Male
+  Lexicon:
+    type: object
+    properties:
+      Content:
+        $ref: '#/definitions/LexiconContent'
+        description: Lexicon content in string format. The content of a lexicon must be in PLS format.
+      Name:
+        $ref: '#/definitions/LexiconName'
+        description: Name of the lexicon.
+    description: 'Provides lexicon name and lexicon content in string format. For more information, see <a href="https://www.w3.org/TR/pronunciation-lexicon/">Pronunciation Lexicon Specification (PLS) Version 1.0</a>.'
+  LexiconAttributes:
+    type: object
+    properties:
+      Alphabet:
+        $ref: '#/definitions/Alphabet'
+        description: Phonetic alphabet used in the lexicon. Valid values are <code>ipa</code> and <code>x-sampa</code>.
+      LanguageCode:
+        $ref: '#/definitions/LanguageCode'
+        description: 'Language code that the lexicon applies to. A lexicon with a language code such as "en" would be applied to all English languages (en-GB, en-US, en-AUS, en-WLS, and so on.'
+      LastModified:
+        $ref: '#/definitions/LastModified'
+        description: Date lexicon was last modified (a timestamp value).
+      LexiconArn:
+        $ref: '#/definitions/LexiconArn'
+        description: Amazon Resource Name (ARN) of the lexicon.
+      LexemesCount:
+        $ref: '#/definitions/LexemesCount'
+        description: Number of lexemes in the lexicon.
+      Size:
+        $ref: '#/definitions/Size'
+        description: 'Total size of the lexicon, in characters.'
+    description: 'Contains metadata describing the lexicon such as the number of lexemes, language code, and so on. For more information, see <a href="http://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html">Managing Lexicons</a>.'
+  TaskId:
+    type: string
+    minLength: 1
+    maxLength: 128
+  SynthesisTask:
+    type: object
+    properties:
+      TaskId:
+        $ref: '#/definitions/TaskId'
+        description: The Amazon Polly generated identifier for a speech synthesis task.
+      TaskStatus:
+        $ref: '#/definitions/TaskStatus'
+        description: Current status of the individual speech synthesis task.
+      TaskStatusReason:
+        $ref: '#/definitions/TaskStatusReason'
+        description: 'Reason for the current status of a specific speech synthesis task, including errors if the task has failed.'
+      OutputUri:
+        $ref: '#/definitions/OutputUri'
+        description: Pathway for the output speech file.
+      CreationTime:
+        $ref: '#/definitions/DateTime'
+        description: Timestamp for the time the synthesis task was started.
+      RequestCharacters:
+        $ref: '#/definitions/RequestCharacters'
+        description: Number of billable characters synthesized.
+      SnsTopicArn:
+        $ref: '#/definitions/SnsTopicArn'
+        description: ARN for the SNS topic optionally used for providing status notification for a speech synthesis task.
+      LexiconNames:
+        $ref: '#/definitions/LexiconNameList'
+        description: 'List of one or more pronunciation lexicon names you want the service to apply during synthesis. Lexicons are applied only if the language of the lexicon is the same as the language of the voice. '
+      OutputFormat:
+        $ref: '#/definitions/OutputFormat'
+        description: 'The format in which the returned output will be encoded. For audio stream, this will be mp3, ogg_vorbis, or pcm. For speech marks, this will be json. '
+      SampleRate:
+        $ref: '#/definitions/SampleRate'
+        description: '<p>The audio frequency specified in Hz.</p> <p>The valid values for mp3 and ogg_vorbis are "8000", "16000", and "22050". The default value is "22050".</p> <p>Valid values for pcm are "8000" and "16000" The default value is "16000". </p>'
+      SpeechMarkTypes:
+        $ref: '#/definitions/SpeechMarkTypeList'
+        description: The type of speech marks returned for the input text.
+      TextType:
+        $ref: '#/definitions/TextType'
+        description: 'Specifies whether the input text is plain text or SSML. The default value is plain text. '
+      VoiceId:
+        $ref: '#/definitions/VoiceId'
+        description: 'Voice ID to use for the synthesis. '
+      LanguageCode:
+        $ref: '#/definitions/LanguageCode'
+        description: '<p>Optional language code for a synthesis task. This is only necessary if using a bilingual voice, such as Aditi, which can be used for either Indian English (en-IN) or Hindi (hi-IN). </p> <p>If a bilingual voice is used and no language code is specified, Amazon Polly will use the default language of the bilingual voice. The default language for any voice is the one returned by the <a href="https://docs.aws.amazon.com/polly/latest/dg/API_DescribeVoices.html">DescribeVoices</a> operation for the <code>LanguageCode</code> parameter. For example, if no language code is specified, Aditi will use Indian English rather than Hindi.</p>'
+    description: SynthesisTask object that provides information about a speech synthesis task.
+  LanguageCodeList:
+    type: array
+    items:
+      $ref: '#/definitions/LanguageCode'
+  LanguageName:
+    type: string
+  LastModified:
+    type: string
+    format: date-time
+  LexemesCount:
+    type: integer
+  LexiconContent:
+    type: string
+  LexiconArn:
+    type: string
+  Size:
+    type: integer
+  LexiconDescription:
+    type: object
+    properties:
+      Name:
+        $ref: '#/definitions/LexiconName'
+        description: Name of the lexicon.
+      Attributes:
+        $ref: '#/definitions/LexiconAttributes'
+        description: Provides lexicon metadata.
+    description: Describes the content of the lexicon.
+  LexiconDescriptionList:
+    type: array
+    items:
+      $ref: '#/definitions/LexiconDescription'
+  LexiconNameList:
+    type: array
+    items:
+      $ref: '#/definitions/LexiconName'
+    maxItems: 5
+  MaxResults:
+    type: integer
+    minimum: 1
+    maximum: 100
+  TaskStatus:
+    type: string
+    enum:
+      - scheduled
+      - inProgress
+      - completed
+      - failed
+  SynthesisTasks:
+    type: array
+    items:
+      $ref: '#/definitions/SynthesisTask'
+  OutputFormat:
+    type: string
+    enum:
+      - json
+      - mp3
+      - ogg_vorbis
+      - pcm
+  OutputS3BucketName:
+    type: string
+    pattern: '^[a-z0-9][\.\-a-z0-9]{1,61}[a-z0-9]$'
+  OutputS3KeyPrefix:
+    type: string
+    pattern: '^[0-9a-zA-Z\/\!\-_\.\*\''\(\)]{0,800}$'
+  OutputUri:
+    type: string
+  RequestCharacters:
+    type: integer
+  SampleRate:
+    type: string
+  SnsTopicArn:
+    type: string
+    pattern: '^arn:aws(-(cn|iso(-b)?|us-gov))?:sns:.*:\w{12}:.+$'
+  SpeechMarkType:
+    type: string
+    enum:
+      - sentence
+      - ssml
+      - viseme
+      - word
+  SpeechMarkTypeList:
+    type: array
+    items:
+      $ref: '#/definitions/SpeechMarkType'
+    maxItems: 4
+  Text:
+    type: string
+  TextType:
+    type: string
+    enum:
+      - ssml
+      - text
+  VoiceId:
+    type: string
+    enum:
+      - Geraint
+      - Gwyneth
+      - Mads
+      - Naja
+      - Hans
+      - Marlene
+      - Nicole
+      - Russell
+      - Amy
+      - Brian
+      - Emma
+      - Raveena
+      - Ivy
+      - Joanna
+      - Joey
+      - Justin
+      - Kendra
+      - Kimberly
+      - Matthew
+      - Salli
+      - Conchita
+      - Enrique
+      - Miguel
+      - Penelope
+      - Chantal
+      - Celine
+      - Lea
+      - Mathieu
+      - Dora
+      - Karl
+      - Carla
+      - Giorgio
+      - Mizuki
+      - Liv
+      - Lotte
+      - Ruben
+      - Ewa
+      - Jacek
+      - Jan
+      - Maja
+      - Ricardo
+      - Vitoria
+      - Cristiano
+      - Ines
+      - Carmen
+      - Maxim
+      - Tatyana
+      - Astrid
+      - Filiz
+      - Vicki
+      - Takumi
+      - Seoyeon
+      - Aditi
+      - Zhiyu
+      - Bianca
+      - Lucia
+      - Mia
+  TaskStatusReason:
+    type: string
+  VoiceName:
+    type: string
+  Voice:
+    type: object
+    properties:
+      Gender:
+        $ref: '#/definitions/Gender'
+        description: Gender of the voice.
+      Id:
+        $ref: '#/definitions/VoiceId'
+        description: Amazon Polly assigned voice ID. This is the ID that you specify when calling the <code>SynthesizeSpeech</code> operation.
+      LanguageCode:
+        $ref: '#/definitions/LanguageCode'
+        description: Language code of the voice.
+      LanguageName:
+        $ref: '#/definitions/LanguageName'
+        description: Human readable name of the language in English.
+      Name:
+        $ref: '#/definitions/VoiceName'
+        description: 'Name of the voice (for example, Salli, Kendra, etc.). This provides a human readable voice name that you might display in your application.'
+      AdditionalLanguageCodes:
+        $ref: '#/definitions/LanguageCodeList'
+        description: '<p>Additional codes for languages available for the specified voice in addition to its default language. </p> <p>For example, the default language for Aditi is Indian English (en-IN) because it was first used for that language. Since Aditi is bilingual and fluent in both Indian English and Hindi, this parameter would show the code <code>hi-IN</code>.</p>'
+    description: Description of the voice.
