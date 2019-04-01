@@ -2,7 +2,7 @@
 REST API communication using Deep Neural Networks (DNN).
 It relies on Google's Keras and TensorFlow.
 
-As explained in `Detecting Sensitive Dataflows Using Deep Learning`_
+As explained in `PrivAPI - Detecting Personal Data within API Communication Using Deep Learning`_
 
 ----
 
@@ -227,7 +227,7 @@ License
 
 PrivAPI is released under the Apache License. See the bundled `LICENSE`_ file for details.
 
-.. _Detecting Sensitive Dataflows Using Deep Learning: https://medium.com/gbrigandi/detecting-personal-data-within-api-communicatioin-using-deep-learning
+.. _PrivAPI - Detecting Personal Data within API Communication Using Deep Learning: https://medium.com/@gbrigandi/privapi-detecting-personal-data-within-api-communication-using-deep-learning-9e52a1ff09c6
 .. _LICENSE: https://github.com/veridax/privapi/blob/master/LICENSE.txt
 .. _CONTRIBUTING: https://github.com/veridax/privapi/blob/master/CONTRIBUTING.rst
 
