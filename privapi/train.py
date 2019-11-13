@@ -5,6 +5,7 @@ from keras.layers import LSTM, Dense, Dropout
 from keras.layers.embeddings import Embedding
 from keras.preprocessing import sequence
 from keras.preprocessing.text import Tokenizer
+from keras import backend
 from collections import OrderedDict
 import os
 import json
@@ -59,7 +60,10 @@ def train(csv_file, out_folder):
     model = Sequential()
     model.add(Embedding(num_words, 32, input_length=max_payload_length))
     model.add(Dropout(0.5))
-    model.add(LSTM(64, recurrent_dropout=0.5))
+    if has_gpu is not None:
+      model.add(CuDNNLSTM(64))
+    else:
+      model.add(LSTM(64, recurrent_dropout=0.5))
     model.add(Dropout(0.5))
     model.add(Dense(1, activation='sigmoid'))
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -75,6 +79,7 @@ def train(csv_file, out_folder):
     model.save('%s/privapi-lstm-model.h5' % out_folder)
     with open('%s/privapi-lstm-model.json' % out_folder, 'w') as outfile:
         outfile.write(model.to_json())
+
 
 if __name__ == '__main__':
     basedir = os.path.join(os.path.dirname(__file__), os.pardir)
@@ -95,5 +100,10 @@ if __name__ == '__main__':
     else:
         basedir = os.path.join(os.path.dirname(__file__), os.pardir)
         out_folder = '%s/out' % basedir
+
+    has_gpu = None
+    if len(backend.tensorflow_backend._get_available_gpus()) > 0:
+        from keras.layers import CuDNNLSTM
+        has_gpu = True
 
     train(csv_file, out_folder)
