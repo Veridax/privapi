@@ -68,7 +68,7 @@ def train(csv_file, out_folder):
     model.add(Dense(1, activation='sigmoid'))
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     print(model.summary())
-    model.fit(X_train, Y_train, validation_split=0.25, epochs=100, batch_size=128)
+    model.fit(X_train, Y_train, validation_split=0.25, epochs=60, batch_size=128)
 
     score, acc = model.evaluate(X_test, Y_test, verbose=1, batch_size=128)
 
