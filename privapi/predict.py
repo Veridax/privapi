@@ -43,6 +43,9 @@ def predict(input_dir, requests_dir, predictions_csv):
     print("Predictions Generated.")
 
 if __name__ == '__main__':
+    from tensorflow.python.util import deprecation
+    deprecation._PRINT_DEPRECATION_WARNINGS = False
+
     basedir = os.path.join(os.path.dirname(__file__), os.pardir)
     parser = optparse.OptionParser()
     parser.add_option('-i', '--input', action="store", dest="input", help="folder with model and dictionary")

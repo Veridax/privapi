@@ -7,3 +7,4 @@ requests==2.21.0
 keras==2.2.4
 simplejson==3.16.0
 xeger==0.3.4
+numpy==1.14.5
