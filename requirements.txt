@@ -8,3 +8,4 @@ keras==2.2.4
 simplejson==3.16.0
 xeger==0.3.4
 numpy==1.14.5
+h5py==2.10.0
