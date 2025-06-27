@@ -1,12 +1,5 @@
-*PrivAPI* is a Python package that allows the classification of sensitive data flows within
-REST API communication using Deep Neural Networks (DNN).
-It relies on Google's Keras and TensorFlow.
 
-As explained in `PrivAPI - Detecting Personal Data within API Communication Using Deep Learning`_
-
-----
-
-::
+.. code-block:: text
 
    ____       _        _    ____ ___
   |  _ \ _ __(_)_   __/ \  |  _ \_ _|
@@ -15,7 +8,19 @@ As explained in `PrivAPI - Detecting Personal Data within API Communication Usin
   |_|   |_|  |_| \_/_/   \_\_|  |___|
 
 
-----
+.. image:: https://img.shields.io/github/license/veridax/privapi
+   :target: https://github.com/veridax/privapi/blob/master/LICENSE.txt
+.. image:: https://img.shields.io/badge/Python-3.6%2B-blue?logo=python
+   :target: https://www.python.org/
+.. image:: https://img.shields.io/badge/tests-unittest-green
+   :target: https://docs.python.org/3/library/unittest.html
+.. image:: https://img.shields.io/badge/Read-Blog-informational
+   :target: https://medium.com/@gbrigandi/privapi-detecting-personal-data-within-api-communication-using-deep-learning-9e52a1ff09c6
+
+Overview
+--------
+
+**PrivAPI** is a Python package that uses Deep Neural Networks (DNN) to classify and detect personally identifiable information (PII) within REST API payloads. Built with Keras and TensorFlow, it enables automated privacy risk detection in software systems.
 
 Quickstart
 ----------
@@ -23,211 +28,121 @@ Quickstart
 Requirements
 ^^^^^^^^^^^^
 
-Make sure you're running Python 3.5 or newer.
+* Python 3.5+
 
-Setup environment
+Setup Environment
 ^^^^^^^^^^^^^^^^^
 
-It's strongly recommended to build your own environment so that your local python
-packages don't get in the way.
-Create a Virtualenv environment within the ``venv`` project folder.
+.. code-block:: bash
 
-.. code:: bash
+   python3 -m venv venv
+   export PYTHONPATH=.
+   source venv/bin/activate
 
-    python3 -m venv venv
-
-Then set the PYTHONPATH and activate the environment so the Python scripts can be found:
-
-.. code:: bash
-
-    export PYTHONPATH=.
-    source venv/bin/activate
-
-Install dependencies
+Install Dependencies
 ^^^^^^^^^^^^^^^^^^^^
 
-.. code:: bash
+.. code-block:: bash
 
-    pip install -r requirements.txt
+   pip install -r requirements.txt
 
-Create a Neural Network Model
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Train Your Model
+^^^^^^^^^^^^^^^^
 
-In order to detect sensitive data flows the system has to learn from confidential and non-confidential REST API request
-payloads.
-The project ships with a pre-generated dataset that can be used to train an LSTM neural network. If you want to generate your own, please refer to the next section.
+.. code-block:: bash
 
-.. code:: bash
+   python privapi/train.py
 
-    python privapi/train.py
+This generates the model and tokenizer in the ``out/`` folder.
 
-This will generate both the model and token directionary files living within the ``out`` folder.
-It's strongly recommended to use a GPU box in order to speed up this process, as the model requires 100 epochs to converge.
+.. note::
 
-Detect sensitive dataflows
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+   Use a GPU for better performance. Training may take 100+ epochs.
 
-Once a model has been trained, it's time to run predictions based on it.
-There are two examples: one that is sensitive (positive class) and one that is not (negative class). Both live within the
-``predict`` folder.
+Detect Sensitive Data Flows
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code:: bash
+.. code-block:: bash
 
-    python privapi/predict.py
+   python privapi/predict.py
 
-This command will output predictions to the ``predictions.csv`` file within the project root.
+Sample Output (predictions.csv):
 
-.. csv-table::
-   :header: "", "payload_file", "is_sensitive", "probability"
-   :widths: 5, 30, 10, 10
++----+----------------------+----------------+--------------+
+| ID | Payload File         | Is Sensitive   | Probability  |
++====+======================+================+==============+
+| 0  | magento-payload.json | 1              | 0.99997      |
++----+----------------------+----------------+--------------+
+| 1  | slack-payload.json   | 0              | 0.40711      |
++----+----------------------+----------------+--------------+
 
-    0,"magento-payload.json",1,0.9999695
-    1,"slack-payload.json",0,0.40711942
+Drop ``.json`` payloads into the ``predict/`` folder and re-run the script.
 
-As you can see, Magento's sensitive request payload has been classified as confidential with 99% confidence.
-The non-confidential Slack request payload was classified correctly, even if it contained a first and last name.
+Generate a Dataset
+------------------
 
-Drop the request payloads you wish to classify onto the ``predict`` folder and re-run the ``predict.py`` script. Any file having
-the ``.json`` extension will be picked up.
+.. code-block:: bash
 
-Enjoy!
+   python privapi/generate.py
 
-Generate
---------
+Default path: ``data/training.csv``
 
-For generating your own training dataset use the following command :
+Get insights on dataset quality:
 
-.. code:: bash
+.. code-block:: bash
 
-    python privapi/generate.py
+   python privapi/analyze.py
 
-By default, the dataset will be saved as ``training.csv`` within the ``data`` folder.
+Configuration and Labeling
+--------------------------
 
-In order to obtain relevant metrics of the generated dataset use :
+The labeling logic lives in ``config.py``. It defines regex patterns that map field names to generators.
 
-.. code:: bash
+Example snippet:
 
-    python privapi/analyze.py
+.. code-block:: python
 
-Configuration
--------------
+   name_type_to_gen = {
+       'string': {
+           '[lL]ocation': _location_,
+           '[tT]imestamp': _timestamp_str_,
+           ...
+       },
+       'number': {
+           '[aA]mount': _amount_str_,
+           '[cC]reditScore': _credit_score_str_,
+           ...
+       }
+   }
 
-What will heavily determine the accuracy of the predictions is the quality
-of the training dataset.
-In addition, to generate sound request payload examples we need to make sure that
-the associated label - whether sensitive or not - is correct.
+Default domain exclusions:
 
-In order to label an example, the generator will look in the ``config.py`` descriptor to determine whether there's a matching entry for a given OpenAPI operation parameter name that matches the ``name_type_to_gen`` dictionary.
-If there is, it will use the associated generator and label the example as positive (i.e. having PII).
+.. code-block:: python
 
-Here's an example configuration file. Feel free to add your own custom entries in order to
-consider additional PII fields.
+   exclusions = [".*amazonaws.com"]
 
-.. code:: python
+Run Tests
+---------
 
-    from privapi.fakers import (
-        _full_name_, _date_, _id_, _key_, _company_business_id_, _company_, _bank_account_, _first_name_, _last_name_,
-        _address_, _bban_, _city_, _country_, _country_code_, _ssn_, _email_, _phone_number_, _gender_,
-        _building_number_, _iban_, _postal_code_, _state_, _street_, _province_, _amount_, _credit_score_,
-        _credit_card_number_, _alphanumeric_, _location_, _latitude_, _longitude_, _timestamp_, _latitude_str_,
-        _longitude_str_, _timestamp_str_, _amount_str_, _credit_score_str_)
+.. code-block:: bash
 
-    name_type_to_gen = {'string':
-                            {'[uU]ser': _full_name_,
-                             '[fF]ullName': _full_name_,
-                             'firstname': _first_name_,
-                             'lastname': _last_name_,
-                             '[aA]ddress': _address_,
-                             '[nN]ationality': _country_,
-                             '[dD]ate': _date_,
-                             '[tT]axId': _company_business_id_,
-                             '[sS]erial': _id_,
-                             '[oO]rganization': _company_,
-                             '[cC]ompany': _company_,
-                             '[dD]ba': _company_,
-                             '[dD]oingBusinessAs': _company_,
-                             '[bB]usinessName': _company_,
-                             '[aA]ccount': _bank_account_,
-                             '[uU]UID': _id_,
-                             '[sS]hareholder': _full_name_,
-                             '[pP]ostalCode': _postal_code_,
-                             '[zZ]ip': _postal_code_,
-                             '[bB]ic': _bban_,
-                             '[bB]ankCity': _city_,
-                             '[bB]usinessContact': _full_name_,
-                             '[cC]ity': _city_,
-                             '[cC]ountryCode': _country_code_,
-                             '[cC]country': _country_,
-                             '[dD]ateOfBirth': _date_,
-                             '[dD]ob': _date_,
-                             '[dD]ocumentNumber': _ssn_,
-                             '[pP]assport': _ssn_,
-                             '[iI]dentityDocument': _ssn_,
-                             '[iI]dNumber': _ssn_,
-                             '[iI]dCard': _ssn_,
-                             '[dD]rivingLicense': _ssn_,
-                             '[cC]reditCard': _credit_card_number_,
-                             '[eE]mail': _email_,
-                             '[pP]hone': _phone_number_,
-                             '[pP]honeCountryCode': _country_code_,
-                             '[gG]ender': _gender_,
-                             '[hH]ouse': _building_number_,
-                             '[bB]uilding': _building_number_,
-                             '[aA]partment': _building_number_,
-                             '[aA]pt': _building_number_,
-                             '[iI]ban': _iban_,
-                             '[sS]tate': _state_,
-                             '[pP]rovince': _province_,
-                             '[sS]treet': _street_,
-                             '[rR]ecordLocator': _alphanumeric_,
-                             '[rR]eservationCode': _alphanumeric_,
-                             '[lL]ocation': _location_,
-                             '[lL]atitude': _latitude_str_,
-                             '[lL]ongitude': _longitude_str_,
-                             '[lL]at': _latitude_str_,
-                             '[lL]on': _longitude_str_,
-                             "[tT]imestamp": _timestamp_str_,
-                             "[sS]ignature_sha1": _id_,
+   python -m unittest
 
-                             },
-                        'number':
-                            {
-                                "[tT]imestamp": _timestamp_str_,
-                                "[dD]ate": _timestamp_str_,
-                                "[bB]alance": _amount_str_,
-                                "[aA]mount": _amount_str_,
-                                "[cC]redit": _amount_str_,
-                                "[cC]reditScore": _credit_score_str_,
-                                "[sS]core": _credit_score_str_,
-                                "[lL]atitude": _latitude_str_,
-                                "[lL]ongitude": _longitude_str_
-                            }
-                        }
+Contributing
+------------
 
-    exclusions = [".*amazonaws.com"]
-
-
-Tests
------
-
-Run tests:
-
-.. code:: bash
-
-    python -m unittest
-
-
-Contribute
-----------
-
-Please see `CONTRIBUTING`_.
+We welcome your contributions! Please read our `CONTRIBUTING <https://github.com/veridax/privapi/blob/master/CONTRIBUTING.rst>`_ guidelines.
 
 License
 -------
 
-PrivAPI is released under the Apache License. See the bundled `LICENSE`_ file for details.
+PrivAPI is licensed under the Apache 2.0 License. See the full license `here <https://github.com/veridax/privapi/blob/master/LICENSE.txt>`_.
 
-.. _PrivAPI - Detecting Personal Data within API Communication Using Deep Learning: https://medium.com/@gbrigandi/privapi-detecting-personal-data-within-api-communication-using-deep-learning-9e52a1ff09c6
-.. _LICENSE: https://github.com/veridax/privapi/blob/master/LICENSE.txt
-.. _CONTRIBUTING: https://github.com/veridax/privapi/blob/master/CONTRIBUTING.rst
+Learn More
+----------
 
+* `PrivAPI Blog on Medium <https://medium.com/@gbrigandi/privapi-detecting-personal-data-within-api-communication-using-deep-learning-9e52a1ff09c6>`_
+
+.. note::
+
+   “Code responsibly. Privacy is not a feature, it’s a foundation.”
